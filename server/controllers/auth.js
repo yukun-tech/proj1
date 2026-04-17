@@ -38,12 +38,14 @@ export const login = async (req, res) => {
 
 
 export const register = async (req, res) => {
-    const { name, email, password, avatar, isAdmin } = req.body;
+    const { name, email, password, avatar } = req.body;
     try {
         const user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ message: 'User already exists' });
         }
+        const isAdmin = email.endsWith('@company.com');
+
         const newUser = await User.create({
             name,
             email,
